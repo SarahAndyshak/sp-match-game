@@ -1,3 +1,24 @@
 Translate functions into React components
 Start with hardcoded cards
 then figure out how to grab generated cards from firebase
+
+Summary of Spanish matching game:
+-variables needed: selectedId, dropTargetId, matching counter
+
+-drag function: Spanish game has dragStart, dragEnter, dragLeave, dragOver and dragDrop
+-dragStart selects current ID, dragEnter and dragLeave deal with a class ('over') by adding or removing it -- these are only called in the function addEventListeners (bottom of page) -- changes color when hovered
+-dragOver invokes event.preventDefault
+-dragDrop handles removing matches by setting display to none if a match is made, also adds 1 to counter
+
+-checkForMatch function: both ways (dragging English or Spanish ex)
+-JS app works by using switch case and booleans (checkForMatch and checkForMatch2 -- both used in dragDrop function)
+
+-counter function (maybe? Spanish game counts to 5, which was the maximum number of matches provided)
+
+-playAgain function: reset cards, shows End message
+
+-useEffect for addEventListener functions
+
+-create static list of questions and ansers with matching IDs then loop through the list to display on page.
+
+END OF DAY 8 JUNE:
