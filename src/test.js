@@ -6,35 +6,19 @@ function DragCard() {
   const [selectedId, setSelectedId] = useState(null);
   const [dropTargetId, setDropTargetId] = useState(null);
   const [matchingCounter, setMatchingCounter] = useState(0);
-
-
-  const draggableListItems = document.querySelectorAll('.draggableItem');
-  
-  const addEventListeners = () => {
-    draggableListItems.forEach((item) => {
-      item.addEventListener('dragstart', dragStart);
-      item.addEventListener('dragenter', dragEnter);
-      item.addEventListener('drop', dragDrop);
-      item.addEventListener('dragover', dragOver);
-      item.addEventListener('dragleave', dragLeave);
-    });
-  };
-
-  const removeEventListeners = () => {
-    draggableListItems.forEach((item) => {
-      item.removeEventListener('dragstart', dragStart);
-      item.removeEventListener('dragenter', dragEnter);
-      item.removeEventListener('drop', dragDrop);
-      item.removeEventListener('dragover', dragOver);
-      item.removeEventListener('dragleave', dragLeave);
-    });
-  };
+  const [hiddenElements, setHiddenElements] = useState([]);
+  const [triumphMessage, setTriumphMessage] = useState(false);
+  const [allHidden, setAllHidden] = useState(false);
 
   const dragStart = (event) => {
     const id = event.target.id;
     setSelectedId(id);
-    console.log('drag started')
+    console.log('drag started');
   };
+
+  useEffect(() => {
+    console.log(selectedId);
+  }, [selectedId]);
 
   const dragEnter = (event) => {
     event.target.classList.add('over');
@@ -52,28 +36,92 @@ function DragCard() {
     event.preventDefault();
     const id = event.target.id;
     setDropTargetId(id);
-
-    if (checkForMatch(selectedId, dropTargetId)) {
-      document.getElementById(selectedId).style.display = 'none';
-      document.getElementById(dropTargetId).style.display = 'none';
-      console.log('Yay it works!');
-      setMatchingCounter((prevCounter) => prevCounter + 1);
-    }
-
-    event.target.classList.remove('over');
-  };
-
-  const checkForMatch = (selectedId, dropTargetId) => {
-    return selectedId === dropTargetId;
   };
 
   useEffect(() => {
-    addEventListeners();
+    console.log(selectedId);
+    console.log(dropTargetId);
+  }, [selectedId, dropTargetId]);
+
+
+  //by using a useEffect we solve our issue of state not being updated when the if then statement is called to check for equality of selectedId and dropTargetId
+  useEffect(() => {
+    // if the id of the selected element equals the id of the target element, we continue with our function.
+    if (selectedId === dropTargetId) {
+      console.log('Yay it works!');
+      const selectedElement = document.getElementById(selectedId);
+      const dropTargetElement = document.getElementById(dropTargetId);
+    
+
+      // this is a null check, so if these variables are not assigned values, the if then statement will not run.
+      if (selectedElement && dropTargetElement) {
+        // selectedElement.style.display = 'none';
+        selectedElement.style.display = 'none';
+
+        // Find matching answer element with the same ID value and set its display to 'none'
+        const matchingAnswerElement = document.querySelector(
+          `.answerList.draggableItem[id="${selectedId}"]`
+        );
+
+        // same here - if matchingAnswerElement is not assigned a value, the statement will not run. This prevents the error: Cannot read properties of null (reading 'style')
+        if (matchingAnswerElement) {
+          matchingAnswerElement.style.display = 'none';
+        }
+      }
+    } else {
+      console.log('try again');
+    }
+
+    const resetDragStyles = () => {
+      const draggableItems = document.querySelectorAll('.draggableItem');
+      draggableItems.forEach((item) => {
+        item.classList.remove('over');
+      });
+    };
+
+    resetDragStyles();
+  }, [selectedId, dropTargetId]);
+
+  useEffect(() => {
+    const draggableListItems = document.querySelectorAll('.draggableItem');
+    draggableListItems.forEach((item) => {
+      item.addEventListener('dragstart', dragStart);
+      item.addEventListener('dragenter', dragEnter);
+      item.addEventListener('drop', dragDrop);
+      item.addEventListener('dragover', dragOver);
+      item.addEventListener('dragleave', dragLeave);
+    });
 
     return () => {
-      removeEventListeners();
+      const draggableListItems = document.querySelectorAll('.draggableItem');
+      draggableListItems.forEach((item) => {
+        item.removeEventListener('dragstart', dragStart);
+        item.removeEventListener('dragenter', dragEnter);
+        item.removeEventListener('drop', dragDrop);
+        item.removeEventListener('dragover', dragOver);
+        item.removeEventListener('dragleave', dragLeave);
+      });
     };
   }, []);
+
+
+  useEffect(() => {
+    // Check if all elements are hidden
+    const allHidden = questionList.every((question) => {
+      const questionElement = document.getElementById(question.id);
+      return questionElement.style.display === 'none';
+    }) && answerList.every((answer) => {
+      const answerElement = document.getElementById(answer.id);
+      return answerElement.style.display === 'none';
+    });
+  
+    if (allHidden) {
+      setAllHidden(true);
+      console.log('All elements are hidden');
+    }
+  }, [selectedId, dropTargetId]);
+  
+
 
   const questionList = [
     {
@@ -122,50 +170,41 @@ function DragCard() {
   ];
 
   return (
-    <Grid container spacing={2}>
-      <Grid item xs={6}>
-        <Paper>
-          <h3>Questions 77:</h3>
-          {questionList.map((question, id) => (
-            <p className="questionList draggableItem" key={id} draggable="true" id={question.id}>
-              {question.q}
-            </p>
-          ))}
-        </Paper>
+      <Grid container spacing={2}>
+        <Grid item xs={6}>
+          <Paper>
+            <h3>Questions 777:</h3>
+            {questionList.map((question, id) => (
+              <p className="questionList draggableItem"
+                key={id}
+                draggable="true"
+                id={question.id}>
+                {question.q}
+              </p>
+            ))}
+          </Paper>
+        </Grid>
+        <Grid item xs={6}>
+          <Paper>
+            <h3>Answers:</h3>
+            {answerList.map((answer, id) => (
+              <p className="answerList draggableItem"
+                key={id}
+                draggable="true"
+                id={answer.id}>
+                {answer.a}
+              </p>
+            ))}
+          </Paper>
+        </Grid>
+        <Grid item xs={12}>
+        <Grid container justifyContent="center"> {/* Center the winMessage horizontally */}
+          {allHidden && <p className='winMessage'>You win!</p>}
+        </Grid>
       </Grid>
-      <Grid item xs={6}>
-        <Paper>
-          <h3>Answers:</h3>
-          {answerList.map((answer, id) => (
-            <p className="answerList draggableItem" key={id} draggable="true" id={answer.id}>
-              {answer.a}
-            </p>
-          ))}
-        </Paper>
+
       </Grid>
-    </Grid>
   );
 }
 
 export default DragCard;
-
-
-
-useEffect(() => {
-  const dragDiv = dragRef.current;
-
-  dragDiv?.addEventListener('touchstart', onMouseDown, true);
-  dragDiv?.addEventListener('mousedown', onMouseDown, true);
-
-  return () => {
-    dragDiv?.removeEventListener('mousedown', onMouseDown, true);
-    dragDiv?.removeEventListener('mouseup', onMouseUp, true);
-    document.removeEventListener('mousemove', onMouseMove, true);
-
-    dragDiv?.removeEventListener('touchstart', onMouseDown, true);
-    dragDiv?.removeEventListener('touchend', onMouseUp, true);
-    document.removeEventListener('touchmove', onMouseMove, true);
-
-    document.removeEventListener('contextmenu', onContextMenu, false);
-  }
-}, []);
