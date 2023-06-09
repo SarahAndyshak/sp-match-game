@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useCallback, useRef } from 'react';
 import './DragCard.css';
-// import { Container, Row, Col } from 'react-bootstrap';
 import { Grid, Paper } from '@mui/material';
 
 function DragCard() {
@@ -11,6 +10,7 @@ function DragCard() {
   const [matchingCounter, setMatchingCounter] = useState(0);
 
   // this sets the event listeners when the page is loaded
+  // maybe eventListeners need to be attached to specific events/actions
   useEffect(() => {
     addEventListeners();
 
