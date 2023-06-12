@@ -179,30 +179,30 @@ function DragCard({answers, questions}) {
   return (
       <Grid container spacing={2}>
         <Grid item xs={6}>
-          <Paper>
             <h3>Questions:</h3>
             {questions?.map((question, id) => ( // << change questions to questionList
+          <Paper>
               <p className="draggableItem questionList"
                 key={id}
                 draggable="true"
                 id={question.id}>
                 {question.q}
               </p>
-            ))}
           </Paper>
+            ))}
         </Grid>
         <Grid item xs={6}>
-          <Paper>
             <h3>Answers:</h3>
             {answers?.map((answer, id) => ( // << change answers to answerList
+          <Paper>
               <p className="draggableItem answerList"
                 key={id}
                 draggable="true"
                 id={answer.id}>
                 {answer.a}
               </p>
-            ))}
           </Paper>
+            ))}
         </Grid>
         <Grid item xs={12}>
         <Grid container justifyContent="center"> {/* Center the winMessage horizontally */}
