@@ -20,7 +20,7 @@ function App() {
 
   const getStudySet = async () => {
     try {
-      const studysetRef = doc(db, 'sets', '2hIITNZFinxhpiCttxgL');
+      const studysetRef = doc(db, 'sets', 'Gv9UBUTE25vsvZzCjgUD');
 
       onSnapshot(studysetRef, (doc) => {
         setStudyset(doc.data().cards)
@@ -37,10 +37,19 @@ function App() {
       let qs = [];
       // initiate answer array
       let as = [];
+
+      // maps information from firebase to be mapped, allows for questions to have images or not
       studyset.map((x) => {
-        qs.push({q: x.question, id:x.id});
-        as.push({a: x.correctAnswerList[0].answer, id:x.id})
-      })
+        const question = { q: x.question, id: x.id };
+        const correctAnswer = { a: x.correctAnswerList[0].answer, id: x.id };
+  
+        if (x.questionImage && x.questionImage[0] && x.questionImage[0].url) {
+          question.qImage = x.questionImage[0].url;
+        }
+  
+        qs.push(question);
+        as.push(correctAnswer);
+      });
 
       // shuffle question and answer elements for matching game
       const shuffleArray = (arr) => {

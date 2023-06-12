@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import './DragCard.css';
 import { Grid, Paper } from '@mui/material';
 
-function DragCard({answers, questions}) {
+function DragCard({ answers, questions }) {
   const [selectedId, setSelectedId] = useState(null);
   const [dropTargetId, setDropTargetId] = useState(null);
   const [matchingCounter, setMatchingCounter] = useState(0);
@@ -52,18 +52,18 @@ function DragCard({answers, questions}) {
         console.log('Yay it works!');
         const selectedElement = document.getElementById(selectedId);
         const dropTargetElement = document.getElementById(dropTargetId);
-      
-  
+
+
         // this is a null check, so if these variables are not assigned values, the if then statement will not run.
         if (selectedElement && dropTargetElement) {
           // selectedElement.style.display = 'none';
           selectedElement.style.display = 'none';
-  
+
           // Find matching answer element with the same ID value and set its display to 'none'
           const matchingAnswerElement = document.querySelector(
             `.answerList.draggableItem[id="${selectedId}"]`
           );
-  
+
           // same here - if matchingAnswerElement is not assigned a value, the statement will not run. This prevents the error: Cannot read properties of null (reading 'style')
           if (matchingAnswerElement) {
             matchingAnswerElement.style.display = 'none';
@@ -82,29 +82,29 @@ function DragCard({answers, questions}) {
 
       resetDragStyles();
     }
-    
+
   }, [selectedId, dropTargetId]);
 
   useEffect(() => {
     if (questions && answers) {
-    const draggableListItems = document.querySelectorAll('.draggableItem');
-    draggableListItems.forEach((item) => {
-      item.addEventListener('dragstart', dragStart);
-      item.addEventListener('dragenter', dragEnter);
-      item.addEventListener('drop', dragDrop);
-      item.addEventListener('dragover', dragOver);
-      item.addEventListener('dragleave', dragLeave);
-    });
-
-    return () => {
       const draggableListItems = document.querySelectorAll('.draggableItem');
       draggableListItems.forEach((item) => {
-        item.removeEventListener('dragstart', dragStart);
-        item.removeEventListener('dragenter', dragEnter);
-        item.removeEventListener('drop', dragDrop);
-        item.removeEventListener('dragover', dragOver);
-        item.removeEventListener('dragleave', dragLeave);
+        item.addEventListener('dragstart', dragStart);
+        item.addEventListener('dragenter', dragEnter);
+        item.addEventListener('drop', dragDrop);
+        item.addEventListener('dragover', dragOver);
+        item.addEventListener('dragleave', dragLeave);
       });
+
+      return () => {
+        const draggableListItems = document.querySelectorAll('.draggableItem');
+        draggableListItems.forEach((item) => {
+          item.removeEventListener('dragstart', dragStart);
+          item.removeEventListener('dragenter', dragEnter);
+          item.removeEventListener('drop', dragDrop);
+          item.removeEventListener('dragover', dragOver);
+          item.removeEventListener('dragleave', dragLeave);
+        });
       };
     }
   }, [questions, answers]);
@@ -120,7 +120,7 @@ function DragCard({answers, questions}) {
         const answerElement = document.getElementById(answer.id);
         return answerElement.style.display === 'none';
       });
-    
+
       if (allHidden) {
         setAllHidden(true);
         console.log('All elements are hidden');
@@ -129,7 +129,7 @@ function DragCard({answers, questions}) {
   }, [selectedId, dropTargetId, questions]);
 
 
-    const questionList = [
+  const questionList = [
     {
       q: 'What color is the sky?',
       id: 1,
@@ -177,40 +177,60 @@ function DragCard({answers, questions}) {
 
 
   return (
-      <Grid container spacing={2}>
-        <Grid item xs={6}>
-            <h3>Questions:</h3>
-            {questions?.map((question, id) => ( // << change questions to questionList
-          <Paper>
-              <p className="draggableItem questionList"
+    <Grid container spacing={2}>
+      <Grid item xs={6}>
+        <h3>Questions:</h3>
+        {/* Original, without image */}
+        {/* {questions?.map((question, id) => ( // << change questions to questionList
+              <Paper>
+                <p className="draggableItem questionList"
                 key={id}
                 draggable="true"
                 id={question.id}>
                 {question.q}
-              </p>
-          </Paper>
-            ))}
-        </Grid>
-        <Grid item xs={6}>
-            <h3>Answers:</h3>
-            {answers?.map((answer, id) => ( // << change answers to answerList
+                </p>
+              </Paper>
+            ))} */}
+
+        {/* experiment: getting image */}
+        {questions?.map((question, id, qImage) => ( // << change questions to questionList
           <Paper>
-              <p className="draggableItem answerList"
-                key={id}
-                draggable="true"
-                id={answer.id}>
-                {answer.a}
-              </p>
+            <p className="draggableItem questionList"
+              key={id}
+              draggable="true"
+              id={question.id}>
+              {question.q}
+              {question.qImage && (
+                <div>
+                  <img src={question.qImage}
+                    style={{ height: "100px" }} />
+                </div>
+              )}
+            </p>
           </Paper>
-            ))}
-        </Grid>
-        <Grid item xs={12}>
+        ))}
+
+      </Grid>
+      <Grid item xs={6}>
+        <h3>Answers:</h3>
+        {answers?.map((answer, id) => ( // << change answers to answerList
+          <Paper>
+            <p className="draggableItem answerList"
+              key={id}
+              draggable="true"
+              id={answer.id}>
+              {answer.a}
+            </p>
+          </Paper>
+        ))}
+      </Grid>
+      <Grid item xs={12}>
         <Grid container justifyContent="center"> {/* Center the winMessage horizontally */}
           {allHidden && <p className='winMessage'>You win!</p>}
         </Grid>
       </Grid>
 
-      </Grid>
+    </Grid>
   );
 }
 
