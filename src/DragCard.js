@@ -5,9 +5,6 @@ import { Grid, Paper } from '@mui/material';
 function DragCard({ answers, questions }) {
   const [selectedId, setSelectedId] = useState(null);
   const [dropTargetId, setDropTargetId] = useState(null);
-  const [matchingCounter, setMatchingCounter] = useState(0);
-  const [hiddenElements, setHiddenElements] = useState([]);
-  const [triumphMessage, setTriumphMessage] = useState(false);
   const [allHidden, setAllHidden] = useState(false);
 
   const dragStart = (event) => {
@@ -57,10 +54,12 @@ function DragCard({ answers, questions }) {
       console.log(selectedElement.getAttribute('data-name'));
       console.log(dropTargetElement.getAttribute('data-name'));
 
+      const selectedName = selectedElement.getAttribute('data-name');
+      const dropTargetName = dropTargetElement.getAttribute('data-name');
 
 
       // if the id of the selected element equals the id of the target element, we continue with our function.
-      if (selectedId === dropTargetId) {
+      if (selectedElement !== dropTargetElement && selectedName === dropTargetName) {
         console.log('Yay it works!');
         const selectedElement = document.getElementById(selectedId);
         const dropTargetElement = document.getElementById(dropTargetId);
@@ -70,21 +69,22 @@ function DragCard({ answers, questions }) {
         if (selectedElement && dropTargetElement) {
           // selectedElement.style.display = 'none';
           selectedElement.style.display = 'none';
+          dropTargetElement.style.display = 'none';
 
           // Find matching answer element with the same ID value and set its display to 'none'
-          const matchingAnswerElement = document.querySelector(
-            `.answerList.draggableItem[id="${selectedId}"]`
-          );
+          // const matchingAnswerElement = document.querySelector(
+          //   `.answerList.draggableItem[id="${dropTargetName}"]`
+          // );
 
           // same here - if matchingAnswerElement is not assigned a value, the statement will not run. This prevents the error: Cannot read properties of null (reading 'style')
-          if (matchingAnswerElement) {
-            matchingAnswerElement.style.display = 'none';
-          }
+          // if (matchingAnswerElement) {
+          //   matchingAnswerElement.style.display = 'none';
+          // }
         }
       } else {
         console.log('try again');
       }
-      
+
 
       const resetDragStyles = () => {
         const draggableItems = document.querySelectorAll('.draggableItem');
@@ -208,8 +208,8 @@ function DragCard({ answers, questions }) {
               {question.q}
               <br />
               {question.qImage && (
-                  <img src={question.qImage}
-                    style={{ height: "100px" }} />
+                <img src={question.qImage}
+                  style={{ height: "100px" }} />
               )}
             </p>
           </Paper>
