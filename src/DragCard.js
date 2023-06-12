@@ -32,7 +32,9 @@ function DragCard({ answers, questions }) {
   const dragDrop = (event) => {
     event.preventDefault();
     const id = event.target.id;
-    setDropTargetId(id);
+    setDropTargetId(id); 
+    // setSelectedId(null);
+    // drag drop does not seem to reset the selectedId back to null when it is dropped. when setSelectedId(null) is commented out, the drag and drop function stops working.
   };
 
   useEffect(() => {

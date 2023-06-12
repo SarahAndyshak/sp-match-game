@@ -3,7 +3,7 @@
   padding: 10px;
   margin: 5px;
   background-color: #cfd8dc;
-  border: 1px solid #b0bec5;
+  /* border: 1px solid #b0bec5; */
   color: #263238;
   cursor: grab;
 }
@@ -13,7 +13,7 @@
   padding: 10px;
   margin: 5px;
   background-color: #cfd8dc;
-  border: 1px solid #b0bec5;
+  /* border: 1px solid #b0bec5; */
   color: #263238;
   cursor: grab;
 }
@@ -43,17 +43,17 @@ p {
   text-align: center;
 }
 
-main {
+/* main {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   grid-gap: 5px;
-}
+} */
 
 .draggable-list {
   padding: 5px;
 }
 
-li {
+/* li {
   list-style: none;
   padding: 10px;
   margin: 5px;
@@ -61,11 +61,7 @@ li {
   border: 1px solid #b0bec5;
   color: #263238;
   cursor: grab;
-}
-
-.over {
-  background-color: #ae90aa;
-}
+} */
 
 
 table {
