@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import './App.css';
 import DragCard from './DragCard';
-import DragCardParent from './DragCardParent';
+import { v4 } from "uuid";
+// import DragCardParent from './DragCardParent';
 import { collection, addDoc, doc, updateDoc, onSnapshot, deleteDoc } from "firebase/firestore";
 import { db } from './firebase';
 
@@ -40,8 +41,8 @@ function App() {
 
       // maps information from firebase to be mapped, allows for questions to have images or not
       studyset.map((x) => {
-        const question = { q: x.question, id: x.id };
-        const correctAnswer = { a: x.correctAnswerList[0].answer, id: x.id };
+        const question = { q: x.question, id: v4(), name: x.id };
+        const correctAnswer = { a: x.correctAnswerList[0].answer, id: v4(), name: x.id };
   
         if (x.questionImage && x.questionImage[0] && x.questionImage[0].url) {
           question.qImage = x.questionImage[0].url;

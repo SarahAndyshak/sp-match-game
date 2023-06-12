@@ -47,6 +47,18 @@ function DragCard({ answers, questions }) {
   //by using a useEffect we solve our issue of state not being updated when the if then statement is called to check for equality of selectedId and dropTargetId
   useEffect(() => {
     if (selectedId && dropTargetId) {
+
+      const selectedElement = document.getElementById(selectedId);
+      const dropTargetElement = document.getElementById(dropTargetId);
+
+      console.log(selectedElement.parentElement);
+      console.log(dropTargetElement.parentElement);
+
+      console.log(selectedElement.getAttribute('data-name'));
+      console.log(dropTargetElement.getAttribute('data-name'));
+
+
+
       // if the id of the selected element equals the id of the target element, we continue with our function.
       if (selectedId === dropTargetId) {
         console.log('Yay it works!');
@@ -72,6 +84,7 @@ function DragCard({ answers, questions }) {
       } else {
         console.log('try again');
       }
+      
 
       const resetDragStyles = () => {
         const draggableItems = document.querySelectorAll('.draggableItem');
@@ -81,6 +94,8 @@ function DragCard({ answers, questions }) {
       };
 
       resetDragStyles();
+    } else {
+      console.log("Both elements do not exist yet")
     }
 
   }, [selectedId, dropTargetId]);
@@ -180,31 +195,21 @@ function DragCard({ answers, questions }) {
     <Grid container spacing={2}>
       <Grid item xs={6}>
         <h3>Questions:</h3>
-        {/* Original, without image */}
-        {/* {questions?.map((question, id) => ( // << change questions to questionList
-              <Paper>
-                <p className="draggableItem questionList"
-                key={id}
-                draggable="true"
-                id={question.id}>
-                {question.q}
-                </p>
-              </Paper>
-            ))} */}
 
-        {/* experiment: getting image */}
+        {/* Generating cards, including image (if exists) */}
         {questions?.map((question, id, qImage) => ( // << change questions to questionList
           <Paper>
             <p className="draggableItem questionList"
               key={id}
               draggable="true"
-              id={question.id}>
+              id={question.id}
+              data-name={question.name}
+            >
               {question.q}
+              <br />
               {question.qImage && (
-                <div>
                   <img src={question.qImage}
                     style={{ height: "100px" }} />
-                </div>
               )}
             </p>
           </Paper>
@@ -218,7 +223,9 @@ function DragCard({ answers, questions }) {
             <p className="draggableItem answerList"
               key={id}
               draggable="true"
-              id={answer.id}>
+              id={answer.id}
+              data-name={answer.name}
+            >
               {answer.a}
             </p>
           </Paper>
