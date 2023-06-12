@@ -41,6 +41,14 @@ function App() {
         qs.push({q: x.question, id:x.id});
         as.push({a: x.correctAnswerList[0].answer, id:x.id})
       })
+
+      // shuffle question and answer elements for matching game
+      const shuffleArray = (arr) => {
+        arr.sort(() => Math.random() - 0.5);
+      }
+      shuffleArray(qs);
+      shuffleArray(as);
+
       setQuestions(qs);
       setAnswers(as);
     }

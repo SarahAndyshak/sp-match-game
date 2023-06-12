@@ -51,7 +51,7 @@ function DragCard() {
       console.log('Yay it works!');
       const selectedElement = document.getElementById(selectedId);
       const dropTargetElement = document.getElementById(dropTargetId);
-    
+
 
       // this is a null check, so if these variables are not assigned values, the if then statement will not run.
       if (selectedElement && dropTargetElement) {
@@ -114,13 +114,13 @@ function DragCard() {
       const answerElement = document.getElementById(answer.id);
       return answerElement.style.display === 'none';
     });
-  
+
     if (allHidden) {
       setAllHidden(true);
       console.log('All elements are hidden');
     }
   }, [selectedId, dropTargetId]);
-  
+
 
 
   const questionList = [
@@ -170,41 +170,56 @@ function DragCard() {
   ];
 
   return (
-      <Grid container spacing={2}>
-        <Grid item xs={6}>
-          <Paper>
-            <h3>Questions 777:</h3>
-            {questionList.map((question, id) => (
-              <p className="questionList draggableItem"
-                key={id}
-                draggable="true"
-                id={question.id}>
-                {question.q}
-              </p>
-            ))}
-          </Paper>
-        </Grid>
-        <Grid item xs={6}>
-          <Paper>
-            <h3>Answers:</h3>
-            {answerList.map((answer, id) => (
-              <p className="answerList draggableItem"
-                key={id}
-                draggable="true"
-                id={answer.id}>
-                {answer.a}
-              </p>
-            ))}
-          </Paper>
-        </Grid>
-        <Grid item xs={12}>
+    <Grid container spacing={2}>
+      <Grid item xs={6}>
+        <Paper>
+          <h3>Questions 777:</h3>
+          {questionList.map((question, id) => (
+            <p className="questionList draggableItem"
+              key={id}
+              draggable="true"
+              id={question.id}>
+              {question.q}
+            </p>
+          ))}
+        </Paper>
+      </Grid>
+      <Grid item xs={6}>
+        <Paper>
+          <h3>Answers:</h3>
+          {answerList.map((answer, id) => (
+            <p className="answerList draggableItem"
+              key={id}
+              draggable="true"
+              id={answer.id}>
+              {answer.a}
+            </p>
+          ))}
+        </Paper>
+      </Grid>
+      <Grid item xs={12}>
         <Grid container justifyContent="center"> {/* Center the winMessage horizontally */}
           {allHidden && <p className='winMessage'>You win!</p>}
         </Grid>
       </Grid>
 
-      </Grid>
+    </Grid>
   );
 }
 
 export default DragCard;
+
+
+
+
+
+
+
+function shuffleArray(arr) {
+  arr.sort(() => Math.random() - 0.5);
+}
+let arr = [1, 2, 3, 4, 5];
+shuffleArray(qs);
+shuffleArray(as);
+
+console.log(arr)
