@@ -141,67 +141,23 @@ function DragCard({ answers, questions, resultsQuestions, resultsAnswers }) {
 
       if (allHidden) {
         setAllHidden(true);
-        console.log('All elements are hidden');
+        // console.log('All elements are hidden');
       }
     }
   }, [selectedId, dropTargetId, questions]);
 
 
-  // const questionList = [
-  //   {
-  //     q: 'What color is the sky?',
-  //     id: 1,
-  //   },
-  //   {
-  //     q: 'What is your name?',
-  //     id: 2,
-  //   },
-  //   {
-  //     q: 'Nice to meet you',
-  //     id: 3,
-  //   },
-  //   {
-  //     q: 'What is the capital of Oregon',
-  //     id: 4,
-  //   },
-  //   {
-  //     q: 'What is the national bird',
-  //     id: 5,
-  //   },
-  // ];
-
-  // const answerList = [
-  //   {
-  //     a: 'Blue',
-  //     id: 1,
-  //   },
-  //   {
-  //     a: '¿Cómo te llamas?',
-  //     id: 2,
-  //   },
-  //   {
-  //     a: 'Mucho gusto',
-  //     id: 3,
-  //   },
-  //   {
-  //     a: 'Salem',
-  //     id: 4,
-  //   },
-  //   {
-  //     a: 'the bald eagle',
-  //     id: 5,
-  //   },
-  // ];
-
-
   return (
-    <Grid container spacing={2}>
-      <Grid item xs={6}>
+    <Grid container spacing={2} style={{ display: "flex"}}>
+      <Grid item xs={6} style={{ display: "flex", flexDirection: "column"}}>
+        
+      {!allHidden && (
         <h3>Questions:</h3>
+          )}
 
         {/* Generating cards, including image (if exists) */}
         {questions?.map((question, id, qImage) => ( // << change questions to questionList
-          <Paper>
+          <Paper style = {{ flexGrow: 1 }}>
             <p className="draggableItem questionList"
               key={question.id}
               draggable="true"
@@ -219,18 +175,20 @@ function DragCard({ answers, questions, resultsQuestions, resultsAnswers }) {
         ))}
 
       </Grid>
-      <Grid item xs={6}>
+      <Grid item xs={6} style={{display: "flex", flexDirection: "column"}}>
+      {!allHidden && (
         <h3>Answers:</h3>
+          )}
         {answers?.map((answer, id) => ( // << change answers to answerList
-          <Paper>
-            <p className="draggableItem answerList"
-              key={answer.id}
-              draggable="true"
-              id={answer.id}
-              data-name={answer.name}
+          <Paper
+            // style={{ flexGrow: 1, textAlign: "center" }}
+            className="draggableItem answerList"
+            key={answer.id}
+            draggable="true"
+            id={answer.id}
+            data-name={answer.name}
             >
-              {answer.a}
-            </p>
+            {answer.a}
           </Paper>
         ))}
       </Grid>
@@ -252,7 +210,3 @@ function DragCard({ answers, questions, resultsQuestions, resultsAnswers }) {
 }
 
 export default DragCard;
-
-
-
-

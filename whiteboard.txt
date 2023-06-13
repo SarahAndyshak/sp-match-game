@@ -199,3 +199,14 @@ function DragCard() {
 
 
 export default DragCard
+
+
+ANSWERS MAPPING LOGIC FOR DragCard.js
+<p className="draggableItem answerList"
+  key={answer.id}
+  draggable="true"
+  id={answer.id}
+  data-name={answer.name}
+>
+  {answer.a}
+</p>
