@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import './DragCard.css';
-import { Grid, Paper } from '@mui/material';
+import { Grid, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@mui/material';
+import AnswerTable from './AnswerTable';
 
-function DragCard({ answers, questions }) {
+function DragCard({ answers, questions, resultsQuestions, resultsAnswers }) {
   const [selectedId, setSelectedId] = useState(null);
   const [dropTargetId, setDropTargetId] = useState(null);
   const [allHidden, setAllHidden] = useState(false);
@@ -146,51 +147,51 @@ function DragCard({ answers, questions }) {
   }, [selectedId, dropTargetId, questions]);
 
 
-  const questionList = [
-    {
-      q: 'What color is the sky?',
-      id: 1,
-    },
-    {
-      q: 'What is your name?',
-      id: 2,
-    },
-    {
-      q: 'Nice to meet you',
-      id: 3,
-    },
-    {
-      q: 'What is the capital of Oregon',
-      id: 4,
-    },
-    {
-      q: 'What is the national bird',
-      id: 5,
-    },
-  ];
+  // const questionList = [
+  //   {
+  //     q: 'What color is the sky?',
+  //     id: 1,
+  //   },
+  //   {
+  //     q: 'What is your name?',
+  //     id: 2,
+  //   },
+  //   {
+  //     q: 'Nice to meet you',
+  //     id: 3,
+  //   },
+  //   {
+  //     q: 'What is the capital of Oregon',
+  //     id: 4,
+  //   },
+  //   {
+  //     q: 'What is the national bird',
+  //     id: 5,
+  //   },
+  // ];
 
-  const answerList = [
-    {
-      a: 'Blue',
-      id: 1,
-    },
-    {
-      a: '¿Cómo te llamas?',
-      id: 2,
-    },
-    {
-      a: 'Mucho gusto',
-      id: 3,
-    },
-    {
-      a: 'Salem',
-      id: 4,
-    },
-    {
-      a: 'the bald eagle',
-      id: 5,
-    },
-  ];
+  // const answerList = [
+  //   {
+  //     a: 'Blue',
+  //     id: 1,
+  //   },
+  //   {
+  //     a: '¿Cómo te llamas?',
+  //     id: 2,
+  //   },
+  //   {
+  //     a: 'Mucho gusto',
+  //     id: 3,
+  //   },
+  //   {
+  //     a: 'Salem',
+  //     id: 4,
+  //   },
+  //   {
+  //     a: 'the bald eagle',
+  //     id: 5,
+  //   },
+  // ];
 
 
   return (
@@ -202,7 +203,7 @@ function DragCard({ answers, questions }) {
         {questions?.map((question, id, qImage) => ( // << change questions to questionList
           <Paper>
             <p className="draggableItem questionList"
-              key={id}
+              key={question.id}
               draggable="true"
               id={question.id}
               data-name={question.name}
@@ -211,7 +212,7 @@ function DragCard({ answers, questions }) {
               <br />
               {question.qImage && (
                 <img src={question.qImage}
-                  style={{ height: "100px" }} />
+                  style={{ height: "10rem" }} /> // scale image as rem or px?
               )}
             </p>
           </Paper>
@@ -223,7 +224,7 @@ function DragCard({ answers, questions }) {
         {answers?.map((answer, id) => ( // << change answers to answerList
           <Paper>
             <p className="draggableItem answerList"
-              key={id}
+              key={answer.id}
               draggable="true"
               id={answer.id}
               data-name={answer.name}
@@ -235,7 +236,14 @@ function DragCard({ answers, questions }) {
       </Grid>
       <Grid item xs={12}>
         <Grid container justifyContent="center"> {/* Center the winMessage horizontally */}
-          {allHidden && <p className='winMessage'>You win!</p>}
+          {allHidden && (
+          // <p className='winMessage'>You win!</p>
+            <AnswerTable
+              questions={resultsQuestions}
+              answers={resultsAnswers}
+            />
+          )}
+          
         </Grid>
       </Grid>
 

@@ -15,6 +15,8 @@ function App() {
 
   const [questions, setQuestions] = useState([]);
   const [answers, setAnswers] = useState([]);
+  const [shuffledQuestions, setShuffledQuestions] = useState([]);
+  const [shuffledAnswers, setShuffledAnswers] = useState([]);
   console.log('answers', answers)
   console.log('questions', questions)
 
@@ -39,34 +41,69 @@ function App() {
       // initiate answer array
       let as = [];
 
+      // let shuffledQs = [];
+      // let shuffledAs = [];
+
       // maps information from firebase to be mapped, allows for questions to have images or not
       studyset.map((x) => {
         const question = { q: x.question, id: v4(), name: x.id };
         const correctAnswer = { a: x.correctAnswerList[0].answer, id: v4(), name: x.id };
-  
+
         if (x.questionImage && x.questionImage[0] && x.questionImage[0].url) {
           question.qImage = x.questionImage[0].url;
         }
-  
+
         qs.push(question);
         as.push(correctAnswer);
+
+        // deep clone of qs and as to shuffle
+        // shuffledAs = [...as];
+        // shuffledQs = [...qs];
+
+        // slice of state unshuffled
+        setQuestions(qs);
+        setAnswers(as);
+
       });
 
       // shuffle question and answer elements for matching game
       const shuffleArray = (arr) => {
         arr.sort(() => Math.random() - 0.5);
       }
-      shuffleArray(qs);
-      shuffleArray(as);
 
-      setQuestions(qs);
-      setAnswers(as);
+      // deep clone of initial array to be shuffled
+      let shuffledAs = [...as];
+      let shuffledQs = [...qs];
+
+      shuffleArray(shuffledAs);
+      shuffleArray(shuffledQs);
+
+      // setQuestions(qs);
+      // setAnswers(as);
+
+      setShuffledQuestions(shuffledQs);
+      setShuffledAnswers(shuffledAs);
+
+
+
+      // const shuffledQuestions = shuffleArray(questions);
+      // const shuffledAnswers = shuffleArray(answers);
+
+      // setShuffledQuestions(shuffledQuestions);
+      // setShuffledAnswers(shuffledAnswers);
+
     }
   }, [studyset])
 
   return (
     <div className="App">
-      <DragCard answers={answers} questions={questions} />
+      {/* <DragCard answers={answers} questions={questions} /> */}
+      <DragCard
+        answers={shuffledAnswers}
+        questions={shuffledQuestions}
+        resultsQuestions={questions}
+        resultsAnswers={answers}
+      />
       {/* <DragCardParent /> */}
     </div>
   );
