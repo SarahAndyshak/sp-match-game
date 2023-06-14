@@ -210,3 +210,20 @@ ANSWERS MAPPING LOGIC FOR DragCard.js
 >
   {answer.a}
 </p>
+
+{questions?.map((question, id, qImage) => ( // << change questions to questionList
+          <Paper style = {{ flexGrow: 1 }}
+              className="draggableItem questionList"
+              key={question.id}
+              draggable="true"
+              id={question.id}
+              data-name={question.name}
+            >
+              {question.q}
+              <br />
+              {question.qImage && (
+                <img src={question.qImage}
+                  style={{ height: "10rem" }} /> // scale image as rem or px?
+              )}
+          </Paper>
+        ))}

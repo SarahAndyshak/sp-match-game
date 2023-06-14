@@ -157,8 +157,9 @@ function DragCard({ answers, questions, resultsQuestions, resultsAnswers }) {
 
         {/* Generating cards, including image (if exists) */}
         {questions?.map((question, id, qImage) => ( // << change questions to questionList
-          <Paper style = {{ flexGrow: 1 }}>
-            <p className="draggableItem questionList"
+          <Paper 
+            // style = {{ flexGrow: 1 }}
+              className="draggableItem questionList"
               key={question.id}
               draggable="true"
               id={question.id}
@@ -170,7 +171,6 @@ function DragCard({ answers, questions, resultsQuestions, resultsAnswers }) {
                 <img src={question.qImage}
                   style={{ height: "10rem" }} /> // scale image as rem or px?
               )}
-            </p>
           </Paper>
         ))}
 

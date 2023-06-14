@@ -44,7 +44,7 @@ function App() {
       // let shuffledQs = [];
       // let shuffledAs = [];
 
-      // maps information from firebase to be mapped, allows for questions to have images or not
+      // maps information from firebase, allows for questions to have images or not
       studyset.map((x) => {
         const question = { q: x.question, id: v4(), name: x.id };
         const correctAnswer = { a: x.correctAnswerList[0].answer, id: v4(), name: x.id };
