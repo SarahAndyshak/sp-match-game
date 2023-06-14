@@ -9,8 +9,13 @@ function DragCard({ answers, questions, resultsQuestions, resultsAnswers }) {
   const [allHidden, setAllHidden] = useState(false);
 
   const dragStart = (event) => {
-    const id = event.target.id;
-    setSelectedId(id);
+    if (event.target.tagName.toLowerCase() === "img") {
+      const id = event.target.parentElement.id;
+      setSelectedId(id);
+    } else {
+      const id = event.target.id;
+      setSelectedId(id);
+    }
     console.log('drag started');
   };
 
@@ -32,8 +37,13 @@ function DragCard({ answers, questions, resultsQuestions, resultsAnswers }) {
 
   const dragDrop = (event) => {
     event.preventDefault();
-    const id = event.target.id;
-    setDropTargetId(id); 
+    if (event.target.tagName.toLowerCase() === "img") {
+      const id = event.target.parentElement.id;
+      setDropTargetId(id);
+    } else {
+      const id = event.target.id;
+      setDropTargetId(id);
+    } 
     // setSelectedId(null);
     // drag drop does not seem to reset the selectedId back to null when it is dropped. when setSelectedId(null) is commented out, the drag and drop function stops working.
   };
@@ -164,17 +174,17 @@ function DragCard({ answers, questions, resultsQuestions, resultsAnswers }) {
               draggable="true"
               id={question.id}
               data-name={question.name}
-            >
+              >
               {question.q}
               <br />
               {question.qImage && (
                 <img src={question.qImage}
-                  style={{ height: "10rem" }} /> // scale image as rem or px?
-              )}
+                style={{ height: "10rem" }} /> // scale image as rem or px?
+                )}
           </Paper>
         ))}
-
       </Grid>
+
       <Grid item xs={6} style={{display: "flex", flexDirection: "column"}}>
       {!allHidden && (
         <h3>Answers:</h3>
@@ -192,6 +202,7 @@ function DragCard({ answers, questions, resultsQuestions, resultsAnswers }) {
           </Paper>
         ))}
       </Grid>
+
       <Grid item xs={12}>
         <Grid container justifyContent="center"> {/* Center the winMessage horizontally */}
           {allHidden && (
