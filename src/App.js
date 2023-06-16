@@ -17,9 +17,6 @@ function App() {
   const [answers, setAnswers] = useState([]);
   const [shuffledQuestions, setShuffledQuestions] = useState([]);
   const [shuffledAnswers, setShuffledAnswers] = useState([]);
-  console.log('answers', answers)
-  console.log('questions', questions)
-
 
   const getStudySet = async () => {
     try {

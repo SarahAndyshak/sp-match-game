@@ -7,6 +7,11 @@ function DragCard({ answers, questions, resultsQuestions, resultsAnswers }) {
   const [selectedId, setSelectedId] = useState(null);
   const [dropTargetId, setDropTargetId] = useState(null);
   const [allHidden, setAllHidden] = useState(false);
+  const [answerStyle, setAnswerStyle] = useState(false);
+  const [questionStyle, setQuestionStyle] = useState(false);
+
+  console.log('answerStyle', answerStyle);
+  // console.log('dropTargetId', setDropTargetId);
 
   const dragStart = (event) => {
     if (event.target.tagName.toLowerCase() === "img") {
@@ -16,11 +21,11 @@ function DragCard({ answers, questions, resultsQuestions, resultsAnswers }) {
       const id = event.target.id;
       setSelectedId(id);
     }
-    console.log('drag started');
+    // console.log('drag started');
   };
 
   useEffect(() => {
-    console.log(selectedId);
+    //console.log(selectedId);
   }, [selectedId]);
 
   const dragEnter = (event) => {
@@ -48,10 +53,10 @@ function DragCard({ answers, questions, resultsQuestions, resultsAnswers }) {
     // drag drop does not seem to reset the selectedId back to null when it is dropped. when setSelectedId(null) is commented out, the drag and drop function stops working.
   };
 
-  useEffect(() => {
-    console.log(selectedId);
-    console.log(dropTargetId);
-  }, [selectedId, dropTargetId]);
+  // useEffect(() => {
+  //   //console.log(selectedId);
+  //   console.log(dropTargetId);
+  // }, [selectedId, dropTargetId]);
 
 
   //by using a useEffect we solve our issue of state not being updated when the if then statement is called to check for equality of selectedId and dropTargetId
@@ -61,19 +66,22 @@ function DragCard({ answers, questions, resultsQuestions, resultsAnswers }) {
       const selectedElement = document.getElementById(selectedId);
       const dropTargetElement = document.getElementById(dropTargetId);
 
-      console.log(selectedElement.parentElement);
-      console.log(dropTargetElement.parentElement);
+      // console.log(selectedElement.parentElement);
+      // console.log(dropTargetElement.parentElement);
 
-      console.log(selectedElement.getAttribute('data-name'));
-      console.log(dropTargetElement.getAttribute('data-name'));
+      // console.log(selectedElement.getAttribute('data-name'));
+      // console.log(dropTargetElement.getAttribute('data-name'));
 
       const selectedName = selectedElement.getAttribute('data-name');
       const dropTargetName = dropTargetElement.getAttribute('data-name');
 
+      //console.log('selectedName', selectedName)
+      //console.log('dropTargetName', dropTargetName)
+
 
       // if the id of the selected element equals the id of the target element, we continue with our function.
       if (selectedElement !== dropTargetElement && selectedName === dropTargetName) {
-        console.log('Yay it works!');
+        //console.log('Yay it works!');
         const selectedElement = document.getElementById(selectedId);
         const dropTargetElement = document.getElementById(dropTargetId);
 
@@ -93,6 +101,7 @@ function DragCard({ answers, questions, resultsQuestions, resultsAnswers }) {
           // if (matchingAnswerElement) {
           //   matchingAnswerElement.style.display = 'none';
           // }
+
         }
       } else {
         console.log('try again');
@@ -107,6 +116,9 @@ function DragCard({ answers, questions, resultsQuestions, resultsAnswers }) {
       };
 
       resetDragStyles();
+      setSelectedId(null);
+      setDropTargetId(null);
+      setAnswerStyle(false);
     } else {
       console.log("Both elements do not exist yet")
     }
@@ -157,6 +169,37 @@ function DragCard({ answers, questions, resultsQuestions, resultsAnswers }) {
   }, [selectedId, dropTargetId, questions]);
 
 
+  // Check if click events match
+  const handleClick = (event) => {
+    if (selectedId) {
+      // Do the drop functionality - set dropTargetId
+      if (event.target.tagName.toLowerCase() === "img") {
+        const id = event.target.parentElement.id;
+        setDropTargetId(id);
+      } else {
+        const id = event.target.id;
+        setDropTargetId(id);
+      } 
+    } else {
+      // Do the start drag functionality - set selectedId
+      if (event.target.tagName.toLowerCase() === "img") {
+        const id = event.target.parentElement.id;
+        console.log('id is generating TAG NAME', id);
+        setSelectedId(id);
+        // Check if paper style needs to be updated
+        setAnswerStyle(id)
+      } else {
+        const id = event.target.id;
+        console.log('id is generating', id);
+        setSelectedId(id);
+        // Check if paper style needs to be updated
+        setAnswerStyle(id)
+      }
+
+    }
+  }
+
+
   return (
     <Grid container spacing={2} style={{ display: "flex"}}>
       <Grid item xs={6} style={{ display: "flex", flexDirection: "column"}}>
@@ -166,7 +209,7 @@ function DragCard({ answers, questions, resultsQuestions, resultsAnswers }) {
           )}
 
         {/* Generating cards, including image (if exists) */}
-        {questions?.map((question, id, qImage) => ( // << change questions to questionList
+        {questions?.map((question) => ( // << change questions to questionList
           <Paper 
             // style = {{ flexGrow: 1 }}
               className="draggableItem questionList"
@@ -174,12 +217,17 @@ function DragCard({ answers, questions, resultsQuestions, resultsAnswers }) {
               draggable="true"
               id={question.id}
               data-name={question.name}
-              >
+              onClick={(e) => handleClick(e)}
+              style={{
+                outline: answerStyle === question.id ? '3px solid blue' : 'inherit',
+                cursor:'grab !important'
+              }}
+            >
               {question.q}
               <br />
               {question.qImage && (
                 <img src={question.qImage}
-                style={{ height: "10rem" }} /> // scale image as rem or px?
+                style={{ height: "10rem", pointerEvents:'none' }} /> // scale image as rem or px?
                 )}
           </Paper>
         ))}
@@ -189,7 +237,7 @@ function DragCard({ answers, questions, resultsQuestions, resultsAnswers }) {
       {!allHidden && (
         <h3>Answers:</h3>
           )}
-        {answers?.map((answer, id) => ( // << change answers to answerList
+        {answers?.map((answer) => ( // << change answers to answerList
           <Paper
             // style={{ flexGrow: 1, textAlign: "center" }}
             className="draggableItem answerList"
@@ -197,7 +245,12 @@ function DragCard({ answers, questions, resultsQuestions, resultsAnswers }) {
             draggable="true"
             id={answer.id}
             data-name={answer.name}
-            >
+            onClick={(e) => handleClick(e)}
+            style={{
+              outline: answerStyle === answer.id ? '3px solid blue' : 'inherit',
+              cursor:'grab !important'
+            }}
+          >
             {answer.a}
           </Paper>
         ))}

@@ -20,7 +20,7 @@
   padding: 10px !important;
   margin: 5px !important;
   background-color: #cfd8dc !important;
-  border: 1px solid #b0bec5 !important;
+  /* border: 1px solid #b0bec5 !important; */
   color: #263238 !important;
   cursor: grab !important;
   display: flex;
