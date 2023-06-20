@@ -18,7 +18,7 @@
   align-items: center;
   text-align: center;
 
-  width: 20rem; 
+  width: auto; 
   /* could width change to rem */
   height: auto;
 }
@@ -37,7 +37,7 @@
   align-items: center;
   text-align: center !important;
 
-  width: 20rem;
+  width: flex;
   height: flex;
   /* height and width assigned? */
 }

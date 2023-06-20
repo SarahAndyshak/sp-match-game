@@ -186,63 +186,63 @@ function DragCard({ answers, questions, resultsQuestions, resultsAnswers }) {
     }
   }
 
-  // Setting up scattered positioning of cards
-  // if w > h
-  const w = window.innerWidth;
-  const h = window.innerHeight;
+  // // Setting up scattered positioning of cards
+  // // if w > h
+  // const w = window.innerWidth;
+  // const h = window.innerHeight;
 
 
-  console.log("window dimensions: ");
-  console.log(w);
-  console.log(h);
+  // console.log("window dimensions: ");
+  // console.log(w);
+  // console.log(h);
 
-  let left;
-  let right;
+  // let left;
+  // let right;
 
-  // if h > w
-  const adjustedW = w * .8;
-  const adjustedH = h * .8;
+  // // if h > w
+  // const adjustedW = w * .8;
+  // const adjustedH = h * .8;
 
-  let top;
-  let bottom;
+  // let top;
+  // let bottom;
 
-  if (w > h) {
-    left = adjustedW * 0.5
-    right = w - adjustedW * 0.5
-    } else if (h > w) {
-    top = adjustedH * 0.5
-    bottom = h - adjustedH * 0.5
-  }
+  // if (w > h) {
+  //   left = adjustedW * 0.5
+  //   right = w - adjustedW * 0.5
+  //   } else if (h > w) {
+  //   top = adjustedH * 0.5
+  //   bottom = h - adjustedH * 0.5
+  // }
 
-  // if w > h
-  function rightPosition() {
-    const position = left + Math.floor(Math.random() * (right * 0.8));
+  // // if w > h
+  // function rightPosition() {
+  //   const position = left + Math.floor(Math.random() * (right * 0.8));
     
-    if (position > (w * .85) || position < (w * .5)) {
-      return rightPosition(); // Call itself again
-    }
+  //   if (position > (w * .85) || position < (w * .5)) {
+  //     return rightPosition(); // Call itself again
+  //   }
     
-    return position;
-  }
+  //   return position;
+  // }
 
-  function leftPosition() {
-    return Math.floor(Math.random() * (left * 0.9));
-  }
+  // function leftPosition() {
+  //   return Math.floor(Math.random() * (left * 0.9));
+  // }
 
-  // if h > w
-  function topPosition() {
-    return Math.floor(Math.random() * (top * 0.9));
-  }
+  // // if h > w
+  // function topPosition() {
+  //   return Math.floor(Math.random() * (top * 0.9));
+  // }
 
-  function bottomPosition() {
-    const position = top + Math.floor(Math.random() * (bottom * 0.8));
+  // function bottomPosition() {
+  //   const position = top + Math.floor(Math.random() * (bottom * 0.8));
     
-    if (position > (h * .85) || position < (h * .5)) {
-      return bottomPosition(); // Call itself again
-    }
+  //   if (position > (h * .85) || position < (h * .5)) {
+  //     return bottomPosition(); // Call itself again
+  //   }
     
-    return position;
-  }
+  //   return position;
+  // }
 
 
 
@@ -324,7 +324,7 @@ function DragCard({ answers, questions, resultsQuestions, resultsAnswers }) {
   //   </Grid>
   // );
 
-//get objects into multiple columns
+// Using Grid from MUI to place objects into a single grid
     return (
     <Grid container spacing={2} style={{ display: "flex"}} className='allCards'>
       {/* <Grid item xs={6} style={{ display: "flex", flexDirection: "column"}}> */}
