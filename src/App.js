@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import './App.css';
-import DragCard from './DragCard';
+import { DragCard } from './DragCard';
 import { v4 } from "uuid";
 // import DragCardParent from './DragCardParent';
 import { collection, addDoc, doc, updateDoc, onSnapshot, deleteDoc } from "firebase/firestore";
@@ -38,9 +38,6 @@ function App() {
       // initiate answer array
       let as = [];
 
-      // let shuffledQs = [];
-      // let shuffledAs = [];
-
       // maps information from firebase, allows for questions to have images or not
       studyset.map((x) => {
         const question = { q: x.question, id: v4(), name: x.id };
@@ -52,10 +49,6 @@ function App() {
 
         qs.push(question);
         as.push(correctAnswer);
-
-        // deep clone of qs and as to shuffle
-        // shuffledAs = [...as];
-        // shuffledQs = [...qs];
 
         // slice of state unshuffled
         setQuestions(qs);
@@ -75,19 +68,8 @@ function App() {
       shuffleArray(shuffledAs);
       shuffleArray(shuffledQs);
 
-      // setQuestions(qs);
-      // setAnswers(as);
-
       setShuffledQuestions(shuffledQs);
       setShuffledAnswers(shuffledAs);
-
-
-
-      // const shuffledQuestions = shuffleArray(questions);
-      // const shuffledAnswers = shuffleArray(answers);
-
-      // setShuffledQuestions(shuffledQuestions);
-      // setShuffledAnswers(shuffledAnswers);
 
     }
   }, [studyset])

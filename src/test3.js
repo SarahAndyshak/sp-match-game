@@ -3,6 +3,14 @@ import './DragCard.css';
 import { Grid, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@mui/material';
 import AnswerTable from './AnswerTable';
 
+
+// need default function (DragCard) and component function (newSize) newSize exists outside of DragCard and is called inside DragCard, then exported as its own component
+
+// one function needs to create the cards from Firebase
+// another function needs to place the cards
+// one of them needs to deal with drag and click events
+
+
 function DragCard({ answers, questions, resultsQuestions, resultsAnswers }) {
   const [selectedId, setSelectedId] = useState(null);
   const [dropTargetId, setDropTargetId] = useState(null);
@@ -13,6 +21,7 @@ function DragCard({ answers, questions, resultsQuestions, resultsAnswers }) {
   console.log('answerStyle', answerStyle);
   // console.log('dropTargetId', setDropTargetId);
 
+// DRAG & DROP FUNCTIONS -------------------
   const dragStart = (event) => {
     if (event.target.tagName.toLowerCase() === "img") {
       const id = event.target.parentElement.id;
@@ -49,8 +58,7 @@ function DragCard({ answers, questions, resultsQuestions, resultsAnswers }) {
       const id = event.target.id;
       setDropTargetId(id);
     } 
-    // setSelectedId(null);
-    // drag drop does not seem to reset the selectedId back to null when it is dropped. when setSelectedId(null) is commented out, the drag and drop function stops working.
+    
   };
 
 
@@ -94,7 +102,6 @@ function DragCard({ answers, questions, resultsQuestions, resultsAnswers }) {
         console.log('try again');
       }
 
-
       const resetDragStyles = () => {
         const draggableItems = document.querySelectorAll('.draggableItem');
         draggableItems.forEach((item) => {
@@ -111,6 +118,8 @@ function DragCard({ answers, questions, resultsQuestions, resultsAnswers }) {
     }
 
   }, [selectedId, dropTargetId]);
+
+// SELECTING ITEMS  -------------------------------
 
   useEffect(() => {
     if (questions && answers) {
@@ -136,6 +145,7 @@ function DragCard({ answers, questions, resultsQuestions, resultsAnswers }) {
     }
   }, [questions, answers]);
 
+// CHECKING FOR HIDDEN ITEMS TO END GAME ---------------------
 
   useEffect(() => {
     if (selectedId && dropTargetId && questions) {
@@ -155,6 +165,7 @@ function DragCard({ answers, questions, resultsQuestions, resultsAnswers }) {
     }
   }, [selectedId, dropTargetId, questions]);
 
+// CHECK FOR MATCHES IN DND & CLICK EVENTS ------------------------------
 
   // Check if click events match
   const handleClick = (event) => {
@@ -186,7 +197,9 @@ function DragCard({ answers, questions, resultsQuestions, resultsAnswers }) {
     }
   }
 
-  // Setting up scattered positioning of cards
+// PLACEMENT LOGIC ------------------------------------  
+
+  // Setting up scattered positioning of cards - replace with CSS and generate question / answer cards into two divs?
   // if w > h
   const w = window.innerWidth;
   const h = window.innerHeight;
@@ -246,6 +259,7 @@ function DragCard({ answers, questions, resultsQuestions, resultsAnswers }) {
 
 
 
+// GENERATE AND PLACE CARDS -- DECOUPLE THESE FUNCTIONS? ----------
 
 
 // original logic for two columns
@@ -324,222 +338,145 @@ function DragCard({ answers, questions, resultsQuestions, resultsAnswers }) {
   //   </Grid>
   // );
 
-//get objects into multiple columns
-    return (
-    <Grid container spacing={2} style={{ display: "flex"}} className='allCards'>
-      {/* <Grid item xs={6} style={{ display: "flex", flexDirection: "column"}}> */}
-        
-      {!allHidden 
-      // && (
-      //   <h3>Questions:</h3>
-      //     )
-          }
-
-        {/* Generating cards, including image (if exists) */}
-        {questions?.map((question) => ( // << change questions to questionList
-          <Paper 
-              className="draggableItem questionList"
-              key={question.id}
-              draggable="true"
-              id={question.id}
-              data-name={question.name}
-              onClick={(e) => handleClick(e)}
-              style={{
-                outline: answerStyle === question.id ? '3px solid blue' : 'inherit',
-                cursor:'grab !important',
-                // left: leftPosition(), 
-                // top: Math.floor(Math.random() * adjustedH)
-              }}
-            >
-              {question.q}
-              <br />
-              {question.qImage && (
-                <img src={question.qImage}
-                style={{ height: "10rem", pointerEvents:'none' }} /> // scale image as rem or px?
-                )}
-          </Paper>
-        ))}
-
-      {/* <Grid item xs={6} style={{display: "flex", flexDirection: "column"}}> */}
-      {!allHidden 
-      // && (
-      //   <h3>Answers:</h3>
-      //     )
-          }
-        {answers?.map((answer) => ( // << change answers to answerList
-          <Paper
-            className="draggableItem answerList"
-            key={answer.id}
-            draggable="true"
-            id={answer.id}
-            data-name={answer.name}
-            onClick={(e) => handleClick(e)}
-            style={{
-              outline: answerStyle === answer.id ? '3px solid blue' : 'inherit',
-              cursor:'grab !important', 
-              // left: rightPosition(), 
-              // top: Math.floor(Math.random() * adjustedH)
-            }}
-          >
-            {answer.a}
-          </Paper>
-        ))}
-
-      <Grid item xs={12}>
-        <Grid container justifyContent="center"> {/* Center the winMessage horizontally */}
-          {allHidden && (
-          // <p className='winMessage'>You win!</p>
-            <AnswerTable
-              questions={resultsQuestions}
-              answers={resultsAnswers}
-            />
-          )}
-          
-        </Grid>
-      </Grid>
-
-    </Grid>
-  );
-
-
+// IF USING CSS, DIVIDE SCREEN IN HALF, GENERATE QUESTIONS INTO ONE SIDE AND ANSWERS INTO ANOTHER, GET RID OF IF/THEN STATEMENT
 
   // experimental logic for scattered cards
-  // let newSize;
-  // if (w > h){
-  // // newSize = () => (
-  //   return (
-  //       <div>
-  //       {!allHidden && (
-  //         <h3>Questions:</h3>
-  //           )}
+  let newSize;
+  if (w > h){
+  newSize = () => (
+    // return (
+        <div>
+        {!allHidden && (
+          <h3>Questions:</h3>
+            )}
     
-  //         {/* Generating cards, including image (if exists) */}
-  //         {questions?.map((question) => (
-  //           <Paper 
-  //               className="draggableItem questionList"
-  //               key={question.id}
-  //               draggable="true"
-  //               id={question.id}
-  //               data-name={question.name}
-  //               onClick={(e) => handleClick(e)}
-  //               style={{
-  //                 outline: answerStyle === question.id ? '3px solid blue' : 'inherit',
-  //                 cursor:'grab !important',
-  //                 left: leftPosition(), 
-  //                 top: Math.floor(Math.random() * adjustedH)
-  //               }}
-  //             >
-  //               {question.q}
-  //               <br />
-  //               {question.qImage && (
-  //                 <img src={question.qImage}
-  //                 style={{ height: "10rem", pointerEvents:'none' }} /> // scale image as rem or px?
-  //                 )}
-  //           </Paper>
-  //         ))}
+          {/* Generating cards, including image (if exists) */}
+          {questions?.map((question) => (
+            <Paper 
+                className="draggableItem questionList"
+                key={question.id}
+                draggable="true"
+                id={question.id}
+                data-name={question.name}
+                onClick={(e) => handleClick(e)}
+                style={{
+                  outline: answerStyle === question.id ? '3px solid blue' : 'inherit',
+                  cursor:'grab !important',
+                  left: leftPosition(), 
+                  top: Math.floor(Math.random() * adjustedH)
+                }}
+              >
+                {question.q}
+                <br />
+                {question.qImage && (
+                  <img src={question.qImage}
+                  style={{ height: "10rem", pointerEvents:'none' }} /> // scale image as rem or px?
+                  )}
+            </Paper>
+          ))}
     
-  //       {!allHidden && (
-  //         <h3>Answers:</h3>
-  //           )}
-  //         {answers?.map((answer) => (
-  //           <Paper
-  //             className="draggableItem answerList"
-  //             key={answer.id}
-  //             draggable="true"
-  //             id={answer.id}
-  //             data-name={answer.name}
-  //             onClick={(e) => handleClick(e)}
-  //             style={{
-  //               outline: answerStyle === answer.id ? '3px solid blue' : 'inherit',
-  //               cursor:'grab !important', 
-  //               left: rightPosition(), 
-  //               top: Math.floor(Math.random() * adjustedH)
-  //             }}
-  //           >
-  //             {answer.a}
-  //           </Paper>
-  //         ))}
+        {!allHidden && (
+          <h3>Answers:</h3>
+            )}
+          {answers?.map((answer) => (
+            <Paper
+              className="draggableItem answerList"
+              key={answer.id}
+              draggable="true"
+              id={answer.id}
+              data-name={answer.name}
+              onClick={(e) => handleClick(e)}
+              style={{
+                outline: answerStyle === answer.id ? '3px solid blue' : 'inherit',
+                cursor:'grab !important', 
+                left: rightPosition(), 
+                top: Math.floor(Math.random() * adjustedH)
+              }}
+            >
+              {answer.a}
+            </Paper>
+          ))}
     
-  //       {/* Center the winMessage horizontally */}
-  //           {allHidden && (
-  //           // <p className='winMessage'>You win!</p>
-  //             <AnswerTable
-  //               questions={resultsQuestions}
-  //               answers={resultsAnswers}
-  //             />
-  //           )}
-  //           </div> 
+        {/* Center the winMessage horizontally */}
+            {allHidden && (
+            // <p className='winMessage'>You win!</p>
+              <AnswerTable
+                questions={resultsQuestions}
+                answers={resultsAnswers}
+              />
+            )}
+            </div> 
     
     
-  //   );
-  //   } else if (h > w) {
-  //     return (
-  //   // newSize = () => (
-  //       <div>
-  //       {!allHidden && (
-  //         <h3>Questions:</h3>
-  //           )}
+    );
+    } else if (h > w) {
+      // return (
+    newSize = () => (
+        <div>
+        {!allHidden && (
+          <h3>Questions:</h3>
+            )}
     
-  //         {/* Generating cards, including image (if exists) */}
-  //         {questions?.map((question) => (
-  //           <Paper 
-  //               className="draggableItem questionList"
-  //               key={question.id}
-  //               draggable="true"
-  //               id={question.id}
-  //               data-name={question.name}
-  //               onClick={(e) => handleClick(e)}
-  //               style={{
-  //                 outline: answerStyle === question.id ? '3px solid blue' : 'inherit',
-  //                 cursor:'grab !important',
-  //                 left: leftPosition(), 
-  //                 top: Math.floor(Math.random() * adjustedH)
-  //               }}
-  //             >
-  //               {question.q}
-  //               <br />
-  //               {question.qImage && (
-  //                 <img src={question.qImage}
-  //                 style={{ height: "10rem", pointerEvents:'none' }} /> // scale image as rem or px?
-  //                 )}
-  //           </Paper>
-  //         ))}
+          {/* Generating cards, including image (if exists) */}
+          {questions?.map((question) => (
+            <Paper 
+                className="draggableItem questionList"
+                key={question.id}
+                draggable="true"
+                id={question.id}
+                data-name={question.name}
+                onClick={(e) => handleClick(e)}
+                style={{
+                  outline: answerStyle === question.id ? '3px solid blue' : 'inherit',
+                  cursor:'grab !important',
+                  left: leftPosition(), 
+                  top: Math.floor(Math.random() * adjustedH)
+                }}
+              >
+                {question.q}
+                <br />
+                {question.qImage && (
+                  <img src={question.qImage}
+                  style={{ height: "10rem", pointerEvents:'none' }} /> // scale image as rem or px?
+                  )}
+            </Paper>
+          ))}
     
-  //       {!allHidden && (
-  //         <h3>Answers:</h3>
-  //           )}
-  //         {answers?.map((answer) => (
-  //           <Paper
-  //             className="draggableItem answerList"
-  //             key={answer.id}
-  //             draggable="true"
-  //             id={answer.id}
-  //             data-name={answer.name}
-  //             onClick={(e) => handleClick(e)}
-  //             style={{
-  //               outline: answerStyle === answer.id ? '3px solid blue' : 'inherit',
-  //               cursor:'grab !important', 
-  //               left: rightPosition(), 
-  //               top: Math.floor(Math.random() * adjustedH)
-  //             }}
-  //           >
-  //             {answer.a}
-  //           </Paper>
-  //         ))}
+        {!allHidden && (
+          <h3>Answers:</h3>
+            )}
+          {answers?.map((answer) => (
+            <Paper
+              className="draggableItem answerList"
+              key={answer.id}
+              draggable="true"
+              id={answer.id}
+              data-name={answer.name}
+              onClick={(e) => handleClick(e)}
+              style={{
+                outline: answerStyle === answer.id ? '3px solid blue' : 'inherit',
+                cursor:'grab !important', 
+                left: rightPosition(), 
+                top: Math.floor(Math.random() * adjustedH)
+              }}
+            >
+              {answer.a}
+            </Paper>
+          ))}
     
-  //       {/* Center the winMessage horizontally */}
-  //           {allHidden && (
-  //           // <p className='winMessage'>You win!</p>
-  //             <AnswerTable
-  //               questions={resultsQuestions}
-  //               answers={resultsAnswers}
-  //             />
-  //           )}
+        {/* Center the winMessage horizontally */}
+            {allHidden && (
+            // <p className='winMessage'>You win!</p>
+              <AnswerTable
+                questions={resultsQuestions}
+                answers={resultsAnswers}
+              />
+            )}
             
     
-  //   </div>
-  //   );
-  //   }
+    </div>
+    );
+    }
 
 
 
