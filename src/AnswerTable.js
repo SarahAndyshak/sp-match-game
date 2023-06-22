@@ -1,12 +1,14 @@
-import React, { useState, useEffect } from 'react';
-import { Grid, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@mui/material';
+import React from 'react';
+import { Button, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@mui/material';
 
 function AnswerTable({questions, answers}) {
-
 
   return (
     <TableContainer>
       <h1>You Won!</h1>
+      <div style={{ display: 'flex', justifyContent: 'center' }}>
+        <Button variant="contained" onClick={() => window.location.reload(false)}>Play again!</Button>
+      </div>
     <Table>
     <TableHead>
       <TableRow>
@@ -21,7 +23,7 @@ function AnswerTable({questions, answers}) {
               <br />
               {question.qImage && (
                 <img src={question.qImage}
-                  style={{ height: "10rem" }} /> // scale image as rem or px?
+                  style={{ height: "10rem" }} />
               )}
               </TableCell>
           <TableCell style={{textAlign: "center"}}>
